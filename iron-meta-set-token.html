@@ -4,7 +4,7 @@
 <dom-module id="iron-meta-set-token">
 
   <template>
-    <iron-meta id="ironMeta" key="csrf_token" value="[[data]]"></iron-meta>
+    <iron-meta id="ironMeta" key="csrf_token" value="[[_data]]"></iron-meta>
   </template>
 
   <script>
@@ -20,9 +20,10 @@
       properties: {
         value: String,
         name: String,
-        data: {
+        _data: {
           type: Object,
-          computed: '_computeData(value, name)'
+          computed: '_computeData(value, name)',
+          readOnly: true
         }
       },
 
