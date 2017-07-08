@@ -1,31 +1,35 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/legacy/class.html">
 <link rel="import" href="../iron-meta/iron-meta.html">
 <link rel="import" href="../iron-form-element-behavior/iron-form-element-behavior.html">
 
 <script>
 
-  Polymer({
+  class IronMetaToken 
+    extends Polymer.mixinBehaviors(
+      [Polymer.IronFormElementBehavior],
+      Polymer.Element){
     
-    is: 'iron-meta-token',
-
-    hostAttributes: {
-      'hidden': true
-    },
-
-    behaviors: [
-      Polymer.IronFormElementBehavior
-    ],
-
-    ready: function() {
-      var ironMetaQuery = new Polymer.IronMetaQuery({key: 'csrf_token'});
-      if (ironMetaQuery.value 
-        && (value = ironMetaQuery.value.token) 
-        && (name = ironMetaQuery.value.name)) {
-        this.value = value;
-        this.name = name;
-      } else {
-        console.warn('You must provide a token value and name using <iron-meta-set-token> for your forms to contain a token.');
-      }
+    static get is() {
+      return 'iron-meta-token'
     }
-  });
+
+    ready () {
+      super.ready();
+      this._ensureAttribute('hidden', true);
+      Polymer.RenderStatus.afterNextRender(this, function() {
+        let ironMeta = new Polymer.IronMeta({key: 'csrf_token'});
+        let value = "";
+        if (ironMeta.value 
+          && (value = ironMeta.value.token) 
+          && (name = ironMeta.value.name)) {
+          this.value = value;
+          this.name = name;
+        } else {
+          console.warn('You must provide a token value and name using <iron-meta-set-token> for your forms to contain a token.');
+        }
+      }.bind(this));
+    }
+  }
+  window.customElements.define(IronMetaToken.is, IronMetaToken);
 </script>

@@ -8,18 +8,13 @@ Code distributed by Google as part of the polymer project is also
 subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
 -->
 
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../iron-form/iron-form.html">
 <link rel="import" href="iron-meta-token.html">
-<!--
-
-@demo demo/index.html
-@hero hero.svg
--->
 
 <dom-module id="iron-form-csrf">
   <template>
-    <form is="iron-form"
+    <iron-form
       id="form"
       method="[[method]]"
       action="[[action]]"
@@ -29,35 +24,41 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       request="[[request]]"
       with-credentials="[[withCredentials]]">   
       <iron-meta-token></iron-meta-token>
-      <content></content>
-    </form>
+      <slot></slot>
+    </iron-form>
   </template>
 
   <script>
-    Polymer({
-      is: 'iron-form-csrf',
+    class IronFormCsrf extends Polymer.Element{
+      
+      static get is() {
+        return 'iron-form-csrf'
+      }
 
-      properties: {
-        method: String,
-        action: String,
-        contentType: String,
-        disableNativeValidationUi: Boolean,
-        headers: Object,
-        request: Object,
-        withCredentials: Boolean
-      },
+      static get properties() {
+        return {
+          method: String,
+          action: String,
+          contentType: String,
+          disableNativeValidationUi: Boolean,
+          headers: Object,
+          request: Object,
+          withCredentials: Boolean
+        }
+      }
 
-      submit: function() {
+      submit () {
         this.$.form.submit();
-      },
+      }
 
-      serialize: function() {
+      serialize () {
         return this.$.form.serialize();
-      },
+      }
 
-      validate: function() {
+      validate () {
         return this.$.form.validate();
       }
-    });
+    }
+    window.customElements.define(IronFormCsrf.is, IronFormCsrf);
   </script>
 </dom-module>

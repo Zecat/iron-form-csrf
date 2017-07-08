@@ -1,4 +1,5 @@
-<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../polymer/lib/legacy/class.html">
 <link rel="import" href="../iron-meta/iron-meta.html">
 
 <dom-module id="iron-meta-set-token">
@@ -9,32 +10,36 @@
 
   <script>
 
-    Polymer({
+    class IronMetaSetToken extends Polymer.Element{
       
-      is: 'iron-meta-set-token',
+      static get is() {
+        return 'iron-meta-set-token'
+      }
 
-      hostAttributes: {
-        'hidden': true
-      },
-
-      properties: {
-        value: String,
-        name: String,
-        _data: {
-          type: Object,
-          computed: '_computeData(value, name)',
-          readOnly: true
+      static get properties() {
+        return {
+          value: String,
+          name: String,
+          _data: {
+            type: Object,
+            computed: '_computeData(value, name)',
+            readOnly: true
+          }
         }
-      },
+      }
 
-      _computeData: function(value, name) {
+      ready(){
+        super.ready();
+        this._ensureAttribute('hidden', true);
+      }
+
+      _computeData (value, name) {
         return {
           'token': value,
           'name': name
-        };
+        }
       }
-
-    });
-
+    }
+    window.customElements.define(IronMetaSetToken.is, IronMetaSetToken);
   </script>
 </dom-module>
